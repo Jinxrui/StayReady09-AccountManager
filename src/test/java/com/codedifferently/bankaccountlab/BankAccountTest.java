@@ -44,7 +44,7 @@ public class BankAccountTest {
     @Test
     public void withdrawTest(){
         acc.withdraw(100);
-        Assert.assertEquals(-100.0, acc.getBalance(), .2);
+        Assert.assertEquals(0.0, acc.getBalance(), .2);
     }
 
     @Test
@@ -62,6 +62,19 @@ public class BankAccountTest {
     public void lockedTest(){
         Assert.assertEquals(true, acc.locked());
     }
+
+    @Test
+    public void unlockTest(){
+        acc.unlock();
+        Assert.assertEquals(false, acc.locked());
+    }
+    @Test
+    public void lockTest(){
+        acc.lock();
+        Assert.assertEquals(true, acc.locked());
+    }
+
+
 
     @Test
     public void toStringTest(){

@@ -19,7 +19,7 @@ public class MainApplication {
             menu();
         }while(!end);
 
-        logger.info("Tanks for using this ATM.");
+        logger.info("Thanks for using this ATM.");
     }
 
     public static BankAccount selectAccount(){
@@ -33,6 +33,9 @@ public class MainApplication {
             }
             if (!safeLock()) {
                 currentAcc = null;
+            }
+            else{
+                currentAcc.unlock();
             }
             return currentAcc;
         }catch(InputMismatchException e){
@@ -61,25 +64,33 @@ public class MainApplication {
     public static void menu(){
         try {
             logger.info("Menu:\n1. Transaction (Deposit/Withdraw)\n2. View Account\n3. Create Account\n4. Delete Account\n5. Exit");
-            switch (scan.nextInt()) {
-                case 1:
+            switch (scan.nextLine()) {
+                case "1":
                     selectAccount();
-                    transaction();
-                    currentAcc.lock();
+                    if(!currentAcc.locked()) {
+                        transaction();
+                    }
+                    currentAcc = null;
                     break;
-                case 2:
+                case "2":
                     selectAccount();
-                    viewAccount();
-                    currentAcc.lock();
+                    if(!currentAcc.locked()) {
+                        viewAccount();
+                    }
+                    currentAcc = null;
                     break;
-                case 3:
+                case "3":
                     createAccount();
+                    currentAcc = null;
                     break;
-                case 4:
+                case "4":
                     selectAccount();
-                    deleteAccount();
+                    if(!currentAcc.locked()) {
+                        deleteAccount();
+                    }
+                    currentAcc = null;
                     break;
-                case 5:
+                case "5":
                     end = true;
                     break;
                 default:
@@ -159,6 +170,7 @@ public class MainApplication {
            i++;
         }
         currentAcc = null;
+        logger.info("Account Deleted.");
     }
 
     public static void viewAccount(){
